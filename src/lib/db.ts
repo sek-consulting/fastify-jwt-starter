@@ -7,7 +7,7 @@ const db = new DataSource({
   username: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
-  entities: ["dist/entities/*.{js,ts}"],
+  entities: ["build/entities/*.{js,ts}"],
   logging: ["error", "query"],
 });
 
