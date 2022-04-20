@@ -9,17 +9,17 @@ export type AppOptions = {
 } & Partial<AutoloadPluginOptions>;
 
 const app: FastifyPluginAsync<AppOptions> = async (
-  fastify,
+  server,
   opts
 ): Promise<void> => {
   // Place here your custom code!
 
-  void fastify.register(AutoLoad, {
+  void server.register(AutoLoad, {
     dir: join(__dirname, "plugins"),
     options: opts,
   });
 
-  void fastify.register(AutoLoad, {
+  void server.register(AutoLoad, {
     dir: join(__dirname, "routes"),
     options: opts,
     routeParams: true,
