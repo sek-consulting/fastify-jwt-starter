@@ -6,11 +6,9 @@ const users: FastifyPluginAsync = async (server): Promise<void> => {
 
   server.get("/me", async (_, reply) => {
     const payload = server.jwt.payload;
-    if (payload) {
-      const user = await getUserById(payload.id);
-      if (user) {
-        reply.status(200).send({ user });
-      }
+    const user = await getUserById(payload.id);
+    if (user) {
+      reply.status(200).send({ user });
     }
     reply.notFound();
   });

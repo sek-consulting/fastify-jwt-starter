@@ -2,7 +2,6 @@ import fp from "fastify-plugin";
 import fastifyJwt, { FastifyJWTOptions } from "fastify-jwt";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { JwtPayload } from "../entities/jwt-payload";
-import { verifyPayload } from "../services/jwt";
 
 declare module "fastify-jwt" {
   // payload declarations
@@ -20,7 +19,7 @@ declare module "fastify-jwt" {
  *
  * @see https://github.com/fastify/fastify-jwt
  */
-export default fp<FastifyJWTOptions>(async (server, _) => {
+export default fp<FastifyJWTOptions>(async (server) => {
   server.register(fastifyJwt, {
     secret: process.env.JWT_SECRET || "supersecretpasswordthatnobodyshouldknow",
   });
@@ -30,12 +29,7 @@ export default fp<FastifyJWTOptions>(async (server, _) => {
     async (request: FastifyRequest, reply: FastifyReply) => {
       try {
         const payload = await request.jwtVerify();
-        const verified = verifyPayload(payload);
-        if (!verified) {
-          reply.unauthorized();
-        } else {
-          server.jwt.payload = verified;
-        }
+        server.jwt.payload = payload as JwtPayload;
       } catch (err) {
         reply.send(err);
       }
