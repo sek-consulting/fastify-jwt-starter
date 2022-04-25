@@ -13,8 +13,14 @@ const db = new DataSource({
 
 db.initialize()
   .then(() => {
-    // do stuff
+    console.log("DataSource has been initialized!");
   })
-  .catch((error) => console.log(error));
+  .catch((err) => {
+    console.log("Error during DataSource initialization", err);
+  });
 
-export { db };
+const rawQuery = async (query: string, parameters?: any[]): Promise<any> => {
+  return await db.manager.query(query, parameters);
+};
+
+export { db, rawQuery };
