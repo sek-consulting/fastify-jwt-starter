@@ -7,6 +7,7 @@ A skeleton project to kickstart your coding.
 - Autoloading for routes & plugins
 - JWT Authentication
 - Typeorm
+- A Rate Limiter for all routes
 
 # Built-in extras
 
