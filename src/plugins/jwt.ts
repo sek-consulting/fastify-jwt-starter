@@ -1,9 +1,9 @@
 import fp from "fastify-plugin";
-import fastifyJwt, { FastifyJWTOptions } from "fastify-jwt";
+import fastifyJwt, { FastifyJWTOptions } from "@fastify/jwt";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { JwtPayload } from "../entities/jwt-payload";
 
-declare module "fastify-jwt" {
+declare module "@fastify/jwt" {
   // payload declarations
   interface FastifyJWT {
     payload: JwtPayload;
