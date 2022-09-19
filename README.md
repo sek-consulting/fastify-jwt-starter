@@ -8,6 +8,7 @@ A skeleton project to kickstart your coding.
 - JWT Authentication
 - Typeorm
 - A Rate Limiter for all routes
+- CORS
 
 # Built-in extras
 
