@@ -13,8 +13,9 @@ const auth: FastifyPluginAsync = async (server): Promise<void> => {
           name: user.name,
         });
         reply.status(200).send({ token: accessToken });
+      } else {
+        reply.unauthorized();
       }
-      reply.unauthorized();
     }
   );
 };
