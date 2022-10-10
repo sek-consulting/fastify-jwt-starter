@@ -1,6 +1,7 @@
 import * as bcrypt from "bcrypt";
-import { User } from "../entities/user";
+
 import { LoginData } from "../entities/login-data";
+import { User } from "../entities/user";
 import { db } from "../lib/db";
 
 const login = async ({ email, password }: LoginData): Promise<User | false> => {

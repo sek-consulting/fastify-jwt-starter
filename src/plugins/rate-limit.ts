@@ -1,5 +1,5 @@
-import fp from "fastify-plugin";
 import rateLimit, { FastifyRateLimitOptions } from "@fastify/rate-limit";
+import fp from "fastify-plugin";
 
 /**
  * This plugin adds a rate limiter to your routes
@@ -17,6 +17,6 @@ export default fp<FastifyRateLimitOptions>(async (server) => {
     if (reply.statusCode === 429) {
       error.message = "You hit the rate limit! Slow down please!";
     }
-    reply.send(error);
+    return reply.send(error);
   });
 });

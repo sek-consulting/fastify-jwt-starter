@@ -1,4 +1,5 @@
 import { FastifyPluginAsync, FastifyRequest } from "fastify";
+
 import { getUserById } from "../../services/user";
 
 const users: FastifyPluginAsync = async (server): Promise<void> => {
@@ -8,28 +9,20 @@ const users: FastifyPluginAsync = async (server): Promise<void> => {
     const payload = server.jwt.payload;
     const user = await getUserById(payload.id);
     if (user) {
-      reply.status(200).send({ user });
+      return reply.status(200).send({ user });
     }
     reply.notFound();
   });
 
   server.get(
     "/:id",
-    async (
-      request: FastifyRequest<{
-        Params: {
-          id: number;
-        };
-      }>,
-      reply
-    ) => {
+    async (request: FastifyRequest<{ Params: { id: number } }>, reply) => {
       const id = request.params.id;
       const user = await getUserById(id);
       if (user) {
-        reply.status(200).send({ user });
-      } else {
-        reply.notFound();
+        return reply.status(200).send({ user });
       }
+      reply.notFound();
     }
   );
 };

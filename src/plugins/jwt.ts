@@ -1,6 +1,7 @@
-import fp from "fastify-plugin";
 import fastifyJwt, { FastifyJWTOptions } from "@fastify/jwt";
 import { FastifyReply, FastifyRequest } from "fastify";
+import fp from "fastify-plugin";
+
 import { JwtPayload } from "../entities/jwt-payload";
 
 declare module "@fastify/jwt" {
@@ -31,7 +32,7 @@ export default fp<FastifyJWTOptions>(async (server) => {
         const payload = await request.jwtVerify();
         server.jwt.payload = payload as JwtPayload;
       } catch (err) {
-        reply.send(err);
+        return reply.send(err);
       }
     }
   );

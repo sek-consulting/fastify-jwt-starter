@@ -1,6 +1,7 @@
 import { FastifyPluginAsync, FastifyRequest } from "fastify";
-import { login } from "../../services/auth";
+
 import { LoginData } from "../../entities/login-data";
+import { login } from "../../services/auth";
 
 const auth: FastifyPluginAsync = async (server): Promise<void> => {
   server.post(
@@ -8,14 +9,12 @@ const auth: FastifyPluginAsync = async (server): Promise<void> => {
     async (request: FastifyRequest<{ Body: LoginData }>, reply) => {
       const user = await login(request.body);
       if (user) {
-        const accessToken = await reply.jwtSign({
-          id: user.id,
-          name: user.name,
+        const accessToken = await reply.jwtSign({ id: user.id });
+        return reply.status(200).send({
+          token: accessToken,
         });
-        reply.status(200).send({ token: accessToken });
-      } else {
-        reply.unauthorized();
       }
+      reply.unauthorized();
     }
   );
 };
