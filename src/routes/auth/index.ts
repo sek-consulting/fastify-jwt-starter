@@ -1,9 +1,9 @@
 import { FastifyPluginAsync, FastifyRequest } from "fastify";
 
-import { LoginData } from "../../entities/login-data";
-import { login } from "../../services/auth";
+import { LoginData } from "@/entities/login-data";
+import { login } from "@/services/auth";
 
-const auth: FastifyPluginAsync = async (server): Promise<void> => {
+const auth: FastifyPluginAsync = async (server) => {
   server.post(
     "/login",
     async (request: FastifyRequest<{ Body: LoginData }>, reply) => {

@@ -5,7 +5,10 @@
     "experimentalDecorators": true,
     "strictPropertyInitialization": false,
     "outDir": "build",
-    "sourceMap": true
+    "sourceMap": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": ["src/**/*.ts", "global.d.ts"]
 }
