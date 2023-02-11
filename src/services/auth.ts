@@ -1,11 +1,10 @@
+import { User } from ".prisma/client";
+import { prisma } from "../prisma";
 import * as bcrypt from "bcrypt";
-
-import { LoginData } from "@/entities/login-data";
-import { User } from "@/entities/user";
-import { db } from "@/lib/db";
+import { LoginData } from "../entities/login-data";
 
 const login = async ({ email, password }: LoginData): Promise<User | false> => {
-  const user = await db.getRepository(User).findOneBy({ email: email });
+  const user = await prisma.user.findFirst({ where: { email: email } });
   if (user && verify(password, user.password)) {
     return user;
   }

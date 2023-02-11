@@ -1,8 +1,8 @@
-import { User } from "@/entities/user";
-import { db } from "@/lib/db";
+import { User } from ".prisma/client";
+import { prisma } from "../prisma";
 
 const getUserById = async (id: number): Promise<User | null> => {
-  return await db.getRepository(User).findOneBy({ id: id });
+  return await prisma.user.findUnique({ where: { id: id } });
 };
 
 export { getUserById };

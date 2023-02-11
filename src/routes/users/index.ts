@@ -1,6 +1,6 @@
 import { FastifyPluginAsync, FastifyRequest } from "fastify";
 
-import { getUserById } from "@/services/user";
+import { getUserById } from "../../services/user";
 
 const users: FastifyPluginAsync = async (server) => {
   server.addHook("onRequest", server.authenticate);
