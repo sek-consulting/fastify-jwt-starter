@@ -4,6 +4,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "strictPropertyInitialization": false,
+    "rootDir": "src",
     "outDir": "build",
     "sourceMap": true
   },
