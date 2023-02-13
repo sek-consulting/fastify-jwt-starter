@@ -1,37 +1,25 @@
-import fastifyJwt, { FastifyJWTOptions } from "@fastify/jwt";
 import { FastifyReply, FastifyRequest } from "fastify";
 import fp from "fastify-plugin";
-import { JwtPayload } from "../entities/jwt-payload";
 
-declare module "@fastify/jwt" {
-  // payload declarations
-  interface FastifyJWT {
-    payload: JwtPayload;
-  }
-  // server.jwt extension
-  interface JWT {
-    payload: JwtPayload;
-  }
-}
+import { AccessTokenPayload } from "../entities/jwt-payloads";
+import { verifyToken } from "../services/auth";
 
 /**
- * This plugins adds some utilities to handle jwt & authentication
- *
- * @see https://github.com/fastify/fastify-jwt
+ * This plugins handles authentication
  */
-export default fp<FastifyJWTOptions>(async (server) => {
-  server.register(fastifyJwt, {
-    secret: process.env.JWT_SECRET || "supersecretpasswordthatnobodyshouldknow",
-  });
-
+export default fp(async (server) => {
   server.decorate(
     "authenticate",
     async (request: FastifyRequest, reply: FastifyReply) => {
+      const authHeader = request.headers.authorization;
+      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return reply.unauthorized();
+      }
       try {
-        const payload = await request.jwtVerify();
-        server.jwt.payload = payload as JwtPayload;
+        const token = authHeader.substring(7);
+        server.jwtPayload = verifyToken(token) as AccessTokenPayload;
       } catch (err) {
-        return reply.send(err);
+        return reply.status(401).send(err);
       }
     }
   );
@@ -40,5 +28,6 @@ export default fp<FastifyJWTOptions>(async (server) => {
 declare module "fastify" {
   export interface FastifyInstance {
     authenticate(): void;
+    jwtPayload: AccessTokenPayload;
   }
 }

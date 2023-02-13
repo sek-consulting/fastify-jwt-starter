@@ -10,13 +10,13 @@ export type AppOptions = {
 const app: FastifyPluginAsync<AppOptions> = async (server, opts) => {
   server.register(AutoLoad, {
     dir: join(__dirname, "plugins"),
-    options: opts,
+    options: opts
   });
 
   server.register(AutoLoad, {
     dir: join(__dirname, "routes"),
     options: opts,
-    routeParams: true,
+    routeParams: true
   });
 };
 

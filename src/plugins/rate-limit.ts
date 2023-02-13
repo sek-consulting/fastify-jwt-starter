@@ -9,7 +9,7 @@ import fp from "fastify-plugin";
 export default fp<FastifyRateLimitOptions>(async (server) => {
   server.register(rateLimit, {
     max: 10,
-    timeWindow: "1 minute",
+    timeWindow: "1 minute"
   });
 
   // setting a custom error message

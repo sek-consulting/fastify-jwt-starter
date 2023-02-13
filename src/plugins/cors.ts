@@ -8,6 +8,6 @@ import fp from "fastify-plugin";
  */
 export default fp<FastifyCorsOptions>(async (server) => {
   server.register(fastifyCors, {
-    origin: "*",
+    origin: "*"
   });
 });

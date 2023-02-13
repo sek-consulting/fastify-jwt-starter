@@ -8,10 +8,22 @@ datasource db {
 }
 
 model User {
-  id Int @id @default(autoincrement())
-  name String
-  email String
+  id       Int    @id @default(autoincrement())
+  name     String
+  email    String
   password String
 
+  refreshTokens RefreshToken[]
+
   @@map("users")
+}
+
+model RefreshToken {
+  token  String  @id
+  userId Int
+  active Boolean @default(true) @db.TinyInt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("refresh_tokens")
 }

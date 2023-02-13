@@ -1,22 +1,43 @@
 import { FastifyPluginAsync, FastifyRequest } from "fastify";
 
-import { LoginData } from "../../entities/login-data";
-import { login } from "../../services/auth";
+import { createTokens, login, refreshTokens } from "../../services/auth";
 
 const auth: FastifyPluginAsync = async (server) => {
   server.post(
     "/login",
-    async (request: FastifyRequest<{ Body: LoginData }>, reply) => {
-      const user = await login(request.body);
+    async (
+      request: FastifyRequest<{ Body: { email: string; password: string } }>,
+      reply
+    ) => {
+      const user = await login(request.body.email, request.body.password);
       if (user) {
-        const accessToken = await reply.jwtSign({ id: user.id });
-        return reply.status(200).send({
-          token: accessToken,
-        });
+        const tokens = await createTokens(user.id);
+        return reply.status(200).send(tokens);
       }
-      reply.unauthorized();
+      return reply.unauthorized();
     }
   );
+
+  server.post(
+    "/refresh",
+    async (
+      request: FastifyRequest<{ Body: { refreshToken: string } }>,
+      reply
+    ) => {
+      try {
+        const tokens = await refreshTokens(request.body.refreshToken);
+        return reply.status(200).send(tokens);
+      } catch (err) {
+        return reply.status(401).send(err);
+      }
+    }
+  );
+
+  // /REFRESH
+  // body : {refresh_token: token}
+  // auth.ts jwt verifyToken -> reply.unauthorized() if error
+  // auth.ts jwt disableRefreshToken
+  // auth.ts jwt createAccessToken / createRefreshToken
 };
 
 export default auth;
