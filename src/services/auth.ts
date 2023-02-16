@@ -43,36 +43,36 @@ const createAccessToken = (userId: number) => {
 };
 
 const createRefreshToken = async (userId: number) => {
-  const uuid = randomUUID();
+  // deactivate all previous tokens
+  await prisma.refreshToken.updateMany({
+    data: { active: false },
+    where: { userId: userId }
+  });
   // register token as active in the database
+  const uuid = randomUUID();
   await prisma.refreshToken.create({
     data: { token: uuid, userId: userId }
   });
+  // sign new token
   return jwt.sign({ id: userId, uuid: uuid }, key, {
     expiresIn: process.env.REFRESH_EXP
   });
 };
 
-const createTokens = async (userId: number) => {
-  const accessToken = createAccessToken(userId);
-  const refreshToken = await createRefreshToken(userId);
-  return { accessToken: accessToken, refreshToken: refreshToken };
-};
+const createTokens = async (userId: number) => ({
+  accessToken: createAccessToken(userId),
+  refreshToken: await createRefreshToken(userId)
+});
 
 const refreshTokens = async (token: string) => {
   // check refresh-token validity
   const payload = verifyToken(token) as RefreshTokenPayload;
-  const check = await prisma.refreshToken.findFirst({
+  const found = await prisma.refreshToken.findFirst({
     where: { token: payload.uuid, active: true }
   });
-  if (!check) {
+  if (!found) {
     throw new jwt.JsonWebTokenError("invalid token");
   }
-  // deactivate refresh-token
-  await prisma.refreshToken.update({
-    where: { token: payload.uuid },
-    data: { active: false }
-  });
   // create new tokens
   return createTokens(payload.id);
 };
