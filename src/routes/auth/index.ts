@@ -32,12 +32,6 @@ const auth: FastifyPluginAsync = async (server) => {
       }
     }
   );
-
-  // /REFRESH
-  // body : {refresh_token: token}
-  // auth.ts jwt verifyToken -> reply.unauthorized() if error
-  // auth.ts jwt disableRefreshToken
-  // auth.ts jwt createAccessToken / createRefreshToken
 };
 
 export default auth;
