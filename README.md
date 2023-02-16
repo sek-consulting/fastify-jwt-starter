@@ -16,9 +16,8 @@ A skeleton project to kickstart your coding.
 
 ## Roadmap
 
-- [ ] invalidate all old refreshtokens for the user on login
-- [ ] check if exp date needs to be added to db or if the jwt check is enough
 - [ ] polish the readme and add a "how to start" section
+- [x] ~invalidate all old refreshtokens for the user on login~
 - [x] ~adding a refreshtoken (shortlived accesstoken, longlived refreshtoken)~
 - [x] ~re-evaluate eslint/prettier settings and update plugins (especially the import order)~
 - [ ] **more to come**
