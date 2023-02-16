@@ -1,7 +1,7 @@
 import { FastifyPluginAsync } from "fastify";
 
 const root: FastifyPluginAsync = async (server) => {
-  server.get("/", async (request, reply) => {
+  server.get("/", async (_, reply) => {
     return reply.status(200).send({ hello: "world" });
   });
 };
