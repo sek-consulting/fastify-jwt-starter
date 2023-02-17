@@ -41,11 +41,11 @@ fastify-autoload in combination with `routeParams:true` let's you do stuff like 
 ├── auth
 │    └── index.ts
 ├── users
-│     ├── _id
-│     │   └── index.ts
-│     └── index.ts
+│    ├── _id
+│    │   └── index.ts
+│    └── index.ts
 ├── posts
-│     └── index.ts
+│    └── index.ts
 └── index.ts
 ```
 
