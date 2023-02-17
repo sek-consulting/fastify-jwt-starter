@@ -83,11 +83,9 @@ model User {
 ```
 
 - run `npm run gen` to generate all the needed types from the prisma schema
-- create the needed typescript file in the services folder:
+- create the needed typescript file in the services folder (services/post.ts):
 
 ```js
-post.ts;
-
 import { Post } from ".prisma/client";
 import { prisma } from "../prisma";
 
