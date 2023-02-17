@@ -5,7 +5,6 @@
   "main": "app.ts",
   "scripts": {
     "gen": "npx prisma format && npx prisma generate",
-    "clean": "npx rimraf build",
     "build": "tsc",
     "start": "fastify start -l info build/app.js",
     "dev": "tsc && concurrently -k -p \"[{name}]\" -n \"TypeScript,App\" -c \"yellow.bold,cyan.bold\" \"tsc -w\" \"fastify start --ignore-watch=.ts$ -w -l info -P build/app.js\""
