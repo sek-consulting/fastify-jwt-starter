@@ -53,7 +53,7 @@ For more information click [here](https://github.com/fastify/fastify-autoload).
 
 ### 3. Setting up the database
 
-Add or change all the models you need for api in `schema.prisma`, like adding a "Post" model:
+- add or change all the models you need for api in `schema.prisma`, like adding a "Post" model:
 
 ```js
 // data model
@@ -80,6 +80,24 @@ model User {
 
   @@map("users")
 }
+```
+
+- run `npm run gen` to generate all the needed types from the prisma schema
+- create the needed typescript file in the services folder:
+
+```js
+post.ts;
+
+import { Post } from ".prisma/client";
+import { prisma } from "../prisma";
+
+const getPostById = async (id: number): Promise<Post | null> => {
+  return await prisma.post.findUnique({ where: { id: id } });
+};
+
+// add more functionality here depending on your needs
+
+export { getPostById };
 ```
 
 For more information click [here](https://github.com/prisma/prisma).
