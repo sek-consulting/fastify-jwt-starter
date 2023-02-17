@@ -34,18 +34,18 @@ git clone https://github.com/sek-consulting/fastify-api-skeleton.git your/direct
 
 ### 2. Setting up routes
 
-fastify-autoload in combination with `routeParams:true` let's you do stuff like this and use parameters directly in the folder names:
+fastify-autoload in combination with `routeParams:true` let's you do stuff like this and use parameters directly in the folder names (users/\_id):
 
 ```js
 ├── routes
-├── __country-__language
-│   │  └── index.ts
-│   └── users
-│       ├── _id
-│       │   └── index.ts
-│       ├── __country-__language
-│       │   └── index.ts
-│       └── index.ts
+├── auth
+│    └── index.ts
+├── users
+│     ├── _id
+│     │   └── index.ts
+│     └── index.ts
+├── posts
+│     └── index.ts
 └── index.ts
 ```
 
