@@ -24,13 +24,13 @@
 
 ## Setup
 
-1. Installation
+### 1. Installation
 
 ```bash
 git clone https://github.com/sek-consulting/fastify-api-skeleton.git your/directory/
 ```
 
-2. Setting up routes
+### 2. Setting up routes
 
 fastify-autoload in combination with `routeParams:true` let's you do stuff like this and use parameters directly in the folder names:
 
@@ -49,7 +49,7 @@ fastify-autoload in combination with `routeParams:true` let's you do stuff like 
 
 For more information click [here](https://github.com/fastify/fastify-autoload).
 
-3. Setting up the database
+### 3. Setting up the database
 
 Add or change all the models you need for api in `schema.prisma`, like adding a "Post" model:
 
@@ -82,7 +82,7 @@ model User {
 
 For more information click [here](https://github.com/prisma/prisma).
 
-4. Starting the server
+### 4. Starting the server
 
 - development: `npm run dev`
 - production: `npm run build` & `npm run start`
