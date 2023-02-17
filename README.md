@@ -32,26 +32,9 @@ If you don't need some of the plugins for your own project just remove the respe
 git clone https://github.com/sek-consulting/fastify-api-skeleton.git your/directory/
 ```
 
-### 2. Setting up routes
-
-fastify-autoload in combination with `routeParams:true` let's you do stuff like this and use parameters directly in the folder names (users/\_id):
-
-```js
-├── routes
-├── auth
-│    └── index.ts
-├── users
-│    ├── _id
-│    │   └── index.ts
-│    └── index.ts
-├── posts
-│    └── index.ts
-└── index.ts
-```
-
 For more information click [here](https://github.com/fastify/fastify-autoload).
 
-### 3. Setting up the database
+### 2. Setting up the database
 
 - add or change all the models you need for api in `schema.prisma`, like adding a "Post" model:
 
@@ -83,6 +66,11 @@ model User {
 ```
 
 - run `npm run gen` to generate all the needed types from the prisma schema
+
+For more information click [here](https://github.com/prisma/prisma).
+
+### 3. Setting up the services
+
 - create the needed typescript file in the services folder (services/post.ts):
 
 ```js
@@ -98,9 +86,50 @@ const getPostById = async (id: number): Promise<Post | null> => {
 export { getPostById };
 ```
 
-For more information click [here](https://github.com/prisma/prisma).
+### 4. Setting up routes
 
-### 4. Starting the server
+- fastify-autoload in combination with `routeParams:true` let's you do stuff like this and use parameters directly in the folder names (users/\_id):
+
+```js
+routes
+├── auth
+│    └── index.ts
+├── users
+│    ├── _id
+│    │   └── index.ts
+│    └── index.ts
+├── posts
+│    └── index.ts
+└── index.ts
+```
+
+- create the needed files (routes/posts/index.ts):
+
+```js
+import { FastifyPluginAsync, FastifyRequest } from "fastify";
+
+import { getPostById } from "../../services/post";
+
+const posts: FastifyPluginAsync = async (server) => {
+  server.addHook("onRequest", server.authenticate); // this makes all routes below only visible if you're logged-in
+
+  server.get(
+    "/:id",
+    async (request: FastifyRequest<{ Params: { id: number } }>, reply) => {
+      const id = request.params.id;
+      const post = await getPostById(id);
+      if (post) {
+        return reply.status(200).send({ post });
+      }
+      return reply.notFound();
+    }
+  );
+};
+
+export default posts;
+```
+
+### 5. Starting the server
 
 - development: `npm run dev`
 - production: `npm run build` & `npm run start`
