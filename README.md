@@ -18,6 +18,8 @@
 - [@fastify/sensible](https://github.com/fastify/fastify-sensible)
 - [fastify-print-routes](https://github.com/ShogunPanda/fastify-print-routes)
 
+If you don't need some of the plugins for your own project just remove the respective file from the plugins folder and the package.json.
+
 ## Built-in extras
 
 - accessToken payload accessible via _`server.jwtPayload`_
