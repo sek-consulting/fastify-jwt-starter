@@ -25,13 +25,13 @@ Unneeded plugins can be removed by deleting the corresponding file from the plug
 
 ## Installation
 
-1. clone the github repo
+**1.** clone the github repo
 
 ```bash
 git clone https://github.com/sek-consulting/fastify-api-skeleton.git your/directory/
 ```
 
-2. change the provider of the datasource in the `schema.prisma` if needed and set the `DATABASE_URL` in your .env file
+**2.** change the provider of the datasource in the `schema.prisma` if needed and set the `DATABASE_URL` in your .env file
 
 ```
 datasource db {
@@ -40,14 +40,14 @@ datasource db {
 }
 ```
 
-3. use `db.push` to synchronize your schema with the database
+**3.** use `db.push` to synchronize your schema with the database
 
 ## How to?
 
 Let's say you want to create some kind of content management system with posts.
 Here is how you would do that.
 
-### 1. Setting up the database model `schema.prisma`
+### 1. Setting up the database model inside `schema.prisma`
 
 ```js
 // data model
@@ -62,7 +62,7 @@ model Post {
   @@map("posts")
 }
 
-// add post references to user
+// add reference to user
 model User {
   id       Int    @id @default(autoincrement())
   name     String
@@ -80,7 +80,7 @@ For more information click [here](https://github.com/prisma/prisma).
 
 ### 2. Setting up the services for data access
 
-- create the needed file in the services folder (services/post.ts):
+create the needed file in the services folder (services/post.ts):
 
 ```js
 import { prisma } from "../prisma";
@@ -94,7 +94,7 @@ export { getPostById };
 
 ### 3. Setting up routes
 
-- create the needed file(s) in your routes folder (routes/posts/index.ts):
+create the needed file(s) in your routes folder (routes/posts/index.ts):
 
 ```js
 import { FastifyPluginAsync, FastifyRequest } from "fastify";
@@ -128,4 +128,4 @@ export default posts;
 
 ## Reporting issues
 
-- Any new issues please report in [GitHub site](https://github.com/sek-consulting/fastify-api-skeleton/issues)
+Any new issues please report in [GitHub site](https://github.com/sek-consulting/fastify-api-skeleton/issues)
