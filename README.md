@@ -16,27 +16,38 @@
 - [@fastify/cors](https://github.com/fastify/fastify-cors)
 - [@fastify/rate-limit](https://github.com/fastify/fastify-rate-limit)
 - [@fastify/sensible](https://github.com/fastify/fastify-sensible)
-- [fastify-print-routes](https://github.com/ShogunPanda/fastify-print-routes)
 
-If you don't need some of the plugins for your own project just remove the respective file from the plugins folder and the package.json.
+Unneeded plugins can be removed by deleting the corresponding file from the plugins folder and removing the dependency in the package.json.
 
 ## Built-in extras
 
 - accessToken payload accessible via _`server.jwtPayload`_
 
-## Setup
+## Installation
 
-### 1. Installation
+1. clone the github repo
 
 ```bash
 git clone https://github.com/sek-consulting/fastify-api-skeleton.git your/directory/
 ```
 
-For more information click [here](https://github.com/fastify/fastify-autoload).
+2. change the provider of the datasource in the `schema.prisma` if needed and set the `DATABASE_URL` in your .env file
 
-### 2. Setting up the database
+```
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+```
 
-- add or change all the models you need for api in `schema.prisma`, like adding a "Post" model:
+3. use `db.push` to synchronize your schema with the database
+
+## How to?
+
+Let's say you want to create some kind of content management system with posts.
+Here is how you would do that.
+
+### 1. Setting up the database model `schema.prisma`
 
 ```js
 // data model
@@ -51,7 +62,7 @@ model Post {
   @@map("posts")
 }
 
-// add reference to user
+// add post references to user
 model User {
   id       Int    @id @default(autoincrement())
   name     String
@@ -65,45 +76,25 @@ model User {
 }
 ```
 
-- run `npm run gen` to generate all the needed types from the prisma schema
-
 For more information click [here](https://github.com/prisma/prisma).
 
-### 3. Setting up the services
+### 2. Setting up the services for data access
 
-- create the needed typescript file in the services folder (services/post.ts):
+- create the needed file in the services folder (services/post.ts):
 
 ```js
-import { Post } from ".prisma/client";
 import { prisma } from "../prisma";
 
-const getPostById = async (id: number): Promise<Post | null> => {
+const getPostById = async (id: number) => {
   return await prisma.post.findUnique({ where: { id: id } });
 };
-
-// add more functionality here depending on your needs
 
 export { getPostById };
 ```
 
-### 4. Setting up routes
+### 3. Setting up routes
 
-- fastify-autoload in combination with `routeParams:true` let's you do stuff like this and use parameters directly in the folder names (users/\_id):
-
-```js
-routes
-├── auth
-│    └── index.ts
-├── users
-│    ├── _id
-│    │   └── index.ts
-│    └── index.ts
-├── posts
-│    └── index.ts
-└── index.ts
-```
-
-- create the needed files (routes/posts/index.ts):
+- create the needed file(s) in your routes folder (routes/posts/index.ts):
 
 ```js
 import { FastifyPluginAsync, FastifyRequest } from "fastify";
@@ -129,10 +120,7 @@ const posts: FastifyPluginAsync = async (server) => {
 export default posts;
 ```
 
-### 5. Starting the server
-
-- development: `npm run dev`
-- production: `npm run build` & `npm run start`
+**Congratulations! You're done.**
 
 ## Roadmap
 

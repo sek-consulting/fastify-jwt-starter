@@ -1,6 +1,5 @@
 import { randomUUID } from "crypto";
 
-import { User } from ".prisma/client";
 import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
 
@@ -11,10 +10,10 @@ import { prisma } from "../prisma";
         PASSWORD
 ************************ */
 
-const login = async (
-  email: string,
-  password: string
-): Promise<User | false> => {
+/**
+ * tries to find a user with the given credentials
+ */
+const login = async (email: string, password: string) => {
   const user = await prisma.user.findFirst({ where: { email: email } });
   if (user && bcrypt.compareSync(password, user.password)) {
     return user;
@@ -22,9 +21,10 @@ const login = async (
   return false;
 };
 
-const hash = (plainText: string): string => {
-  return bcrypt.hashSync(plainText, 10);
-};
+/**
+ * used to hash the given plain text
+ */
+const hash = (plainText: string) => bcrypt.hashSync(plainText, 10);
 
 /* ************************
           JWT
@@ -33,37 +33,38 @@ const hash = (plainText: string): string => {
 const key =
   process.env.JWT_SECRET || "super-secret-password-that-nobody-should-know";
 
-const verifyToken = (token: string) => {
-  // throws error on fail
-  return jwt.verify(token, key);
-};
+/**
+ * used to verify the passed in token
+ */
+const verifyToken = (token: string) => jwt.verify(token, key);
 
-const createAccessToken = (userId: number) => {
-  return jwt.sign({ id: userId }, key, { expiresIn: process.env.ACCESS_EXP });
-};
-
-const createRefreshToken = async (userId: number) => {
-  // deactivate all previous tokens
+/**
+ * used to create a new set of takens used for authentication
+ */
+const createTokens = async (userId: number) => {
+  // deactivate all previous refresh tokens
   await prisma.refreshToken.updateMany({
     data: { active: false },
     where: { userId: userId }
   });
-  // register token as active in the database
+  // register new refresh token as active
   const uuid = randomUUID();
   await prisma.refreshToken.create({
     data: { token: uuid, userId: userId }
   });
-  // sign new token
-  return jwt.sign({ id: userId, uuid: uuid }, key, {
+  // sign refresh token
+  const refreshToken = jwt.sign({ id: userId, uuid: uuid }, key, {
     expiresIn: process.env.REFRESH_EXP
   });
+  const accessToken = jwt.sign({ id: userId }, key, {
+    expiresIn: process.env.ACCESS_EXP
+  });
+  return { refreshToken: refreshToken, accessToken: accessToken };
 };
 
-const createTokens = async (userId: number) => ({
-  accessToken: createAccessToken(userId),
-  refreshToken: await createRefreshToken(userId)
-});
-
+/**
+ * used to check the token for validity and refresh the tokens if needed
+ */
 const refreshTokens = async (token: string) => {
   // check refresh-token validity
   const payload = verifyToken(token) as RefreshTokenPayload;

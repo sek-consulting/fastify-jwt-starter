@@ -19,7 +19,7 @@ export default fp(async (server) => {
         const token = authHeader.substring(7);
         server.jwtPayload = verifyToken(token) as AccessTokenPayload;
       } catch (err) {
-        return reply.status(401).send(err);
+        return reply.status(401).send(err); // unauthorized
       }
     }
   );
