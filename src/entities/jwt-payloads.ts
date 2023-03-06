@@ -1,10 +1,10 @@
 interface AccessTokenPayload {
-  id: number;
+  id: number
 }
 
 interface RefreshTokenPayload {
-  id: number;
-  uuid: string;
+  id: number
+  uuid: string
 }
 
-export { AccessTokenPayload, RefreshTokenPayload };
+export { AccessTokenPayload, RefreshTokenPayload }
