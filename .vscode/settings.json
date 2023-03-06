@@ -2,5 +2,11 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
-  "eslint.validate": ["javascript", "typescript", "typescriptreact"]
+  "files.autoSave": "onWindowChange",
+  "workbench.activityBar.visible": false,
+  "workbench.editor.showTabs": false,
+  "workbench.editor.limit.enabled": true,
+  "workbench.editor.limit.perEditorGroup": true,
+  "workbench.editor.limit.value": 1,
+  "editor.minimap.enabled": false
 }

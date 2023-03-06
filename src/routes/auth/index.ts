@@ -5,10 +5,7 @@ import { createTokens, login, refreshTokens } from "../../services/auth";
 const auth: FastifyPluginAsync = async (server) => {
   server.post(
     "/login",
-    async (
-      request: FastifyRequest<{ Body: { email: string; password: string } }>,
-      reply
-    ) => {
+    async (request: FastifyRequest<{ Body: { email: string; password: string } }>, reply) => {
       const user = await login(request.body.email, request.body.password);
       if (user) {
         const tokens = await createTokens(user.id);
@@ -20,10 +17,7 @@ const auth: FastifyPluginAsync = async (server) => {
 
   server.post(
     "/refresh",
-    async (
-      request: FastifyRequest<{ Body: { refreshToken: string } }>,
-      reply
-    ) => {
+    async (request: FastifyRequest<{ Body: { refreshToken: string } }>, reply) => {
       try {
         const tokens = await refreshTokens(request.body.refreshToken);
         return reply.status(200).send(tokens);
