@@ -30,7 +30,7 @@ const hash = (plainText: string) => bcrypt.hashSync(plainText, 10)
           JWT
 ************************ */
 
-const key = process.env.JWT_SECRET || "super-secret-password-that-nobody-should-know"
+const key = process.env.JWT_SECRET
 
 /**
  * used to verify the passed in token
