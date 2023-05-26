@@ -1,8 +1,8 @@
-interface AccessTokenPayload {
+type AccessTokenPayload = {
   id: number
 }
 
-interface RefreshTokenPayload {
+type RefreshTokenPayload = {
   id: number
   uuid: string
 }
