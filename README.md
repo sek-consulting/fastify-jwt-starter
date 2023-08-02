@@ -1,3 +1,7 @@
+# ATTENTION!
+
+Starting August 2nd 2023 this repository will be archived.
+
 # Fastify x Prisma x JWT
 
 ![CodeQL](https://github.com/sek-consulting/fastify-api-skeleton/workflows/CodeQL/badge.svg)
@@ -83,13 +87,13 @@ For more information click [here](https://github.com/prisma/prisma).
 create the needed file in the services folder (services/post.ts):
 
 ```js
-import { prisma } from "../prisma";
+import { prisma } from "../prisma"
 
 const getPostById = async (id: number) => {
-  return await prisma.post.findUnique({ where: { id: id } });
-};
+  return await prisma.post.findUnique({ where: { id: id } })
+}
 
-export { getPostById };
+export { getPostById }
 ```
 
 ### 3. Setting up routes
@@ -97,27 +101,24 @@ export { getPostById };
 create the needed file(s) in your routes folder (routes/posts/index.ts):
 
 ```js
-import { FastifyPluginAsync, FastifyRequest } from "fastify";
+import { FastifyPluginAsync, FastifyRequest } from "fastify"
 
-import { getPostById } from "../../services/post";
+import { getPostById } from "../../services/post"
 
 const posts: FastifyPluginAsync = async (server) => {
-  server.addHook("onRequest", server.authenticate); // this makes all routes below only visible if you're logged-in
+  server.addHook("onRequest", server.authenticate) // this makes all routes below only visible if you're logged-in
 
-  server.get(
-    "/:id",
-    async (request: FastifyRequest<{ Params: { id: number } }>, reply) => {
-      const id = request.params.id;
-      const post = await getPostById(id);
-      if (post) {
-        return reply.status(200).send({ post });
-      }
-      return reply.notFound();
+  server.get("/:id", async (request: FastifyRequest<{ Params: { id: number } }>, reply) => {
+    const id = request.params.id
+    const post = await getPostById(id)
+    if (post) {
+      return reply.status(200).send({ post })
     }
-  );
-};
+    return reply.notFound()
+  })
+}
 
-export default posts;
+export default posts
 ```
 
 **Congratulations! You're done.**
